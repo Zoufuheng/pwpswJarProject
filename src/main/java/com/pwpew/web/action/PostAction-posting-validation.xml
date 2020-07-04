@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE validators PUBLIC
+        "-//Apache Struts//XWork Validator 1.0.3//EN"
+        "http://struts.apache.org/dtds/xwork-validator-1.0.3.dtd">
+
+<validators>
+    <field name="postName">
+        <field-validator type="required">
+            <message>姓名不能为空</message>
+        </field-validator>
+        <field-validator type="regex">
+            <param name="regexExpression"><![CDATA[^[\u4E00-\u9FA5\w]{1,20}$]]></param>
+            <message>姓名格式错误</message>
+        </field-validator>
+    </field>
+    <field name="postAge">
+        <field-validator type="required">
+            <message>年龄不能为空</message>
+        </field-validator>
+        <field-validator type="int">
+            <param name="min">10</param>
+            <param name="max">120</param>
+            <message>年龄必须为10-120之间</message>
+        </field-validator>
+    </field>
+    <field name="missingtime">
+        <field-validator type="required">
+            <message>失踪时间不能为空</message>
+        </field-validator>
+        <field-validator type="date">
+            <param name="min">1940-01-01</param>
+            <message>失踪时间不能小于1940年1月1日</message>
+        </field-validator>
+    </field>
+</validators>

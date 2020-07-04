@@ -1,0 +1,42 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <class name="com.pwpew.entity.TVolunteer" table="t_volunteer" schema="welfare_people_seeking">
+        <id name="volId">
+            <column name="volId" sql-type="int(32)"/>
+        </id>
+        <property name="volname">
+            <column name="volname" sql-type="varchar(16)" length="16"/>
+        </property>
+        <property name="volIdCard">
+            <column name="volIdCard" sql-type="varchar(32)" length="32"/>
+        </property>
+        <property name="volPhone">
+            <column name="volPhone" sql-type="varchar(16)" length="16"/>
+        </property>
+        <property name="volSex">
+            <column name="volSex" sql-type="varchar(4)" length="4"/>
+        </property>
+        <property name="volProvince">
+            <column name="volProvince" sql-type="varchar(16)" length="16"/>
+        </property>
+        <property name="volCity">
+            <column name="volCity" sql-type="varchar(16)" length="16"/>
+        </property>
+        <property name="voldetailAddr">
+            <column name="voldetailAddr" sql-type="varchar(64)" length="64"/>
+        </property>
+        <property name="volProfession">
+            <column name="volProfession" sql-type="varchar(16)" length="16"/>
+        </property>
+        <property name="volEmail">
+            <column name="volEmail" sql-type="varchar(32)" length="32"/>
+        </property>
+        <property name="volQq">
+            <column name="volQQ" sql-type="varchar(16)" length="16"/>
+        </property>
+    </class>
+</hibernate-mapping>

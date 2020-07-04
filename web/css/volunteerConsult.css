@@ -1,0 +1,28 @@
+body {
+    background-color: grey;
+}
+
+#main-title {
+    text-align: center;
+    font-size: 24px;
+    font-weight: bold;
+
+}
+
+.main-content {
+    width: 900px;
+    align-content: center;
+    margin: 0 auto;
+    padding: 80px;
+    background-color: white;
+    text-indent: 2em;
+    font-size: 18px;
+}
+
+.vol-link {
+    text-decoration: none;
+}
+
+.vol-qq{
+    width: 200px;
+}

@@ -1,0 +1,256 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>用户信息管理</title>
+    <link rel="stylesheet" type="text/css" href="../ui/themes/default/easyui.css">
+    <link rel="stylesheet" type="text/css" href="../ui/themes/icon.css">
+    <script type="text/javascript" src="../ui/jquery.min.js"></script>
+    <script type="text/javascript" src="../ui/jquery.easyui.min.js"></script>
+    <script type="text/javascript" src="../ui/locale/easyui-lang-zh_CN.js"></script>
+    <script type="text/javascript" src="../js/custom.js"></script>
+
+    <script type="text/javascript">
+        //定义column
+        var columns_v = [[
+            {
+                field: 'username',
+                title: '用户名',
+                width: 100
+            },
+            {
+                field: 'userNickname',
+                title: '昵称',
+                width: 150
+            },
+            {
+                field: 'userGender',
+                title: '性别',
+                width: 50
+            },
+            {
+                field: 'userAge',
+                title: '年龄',
+                width: 50
+            },
+            {
+                field: 'userProvince',
+                title: '所在省市',
+                width: 100
+            },
+            {
+                field: 'userCity',
+                title: '所在城市',
+                width: 100
+            },
+            {
+                field: 'userPhone',
+                title: '联系电话',
+                width: 100
+            },
+            {
+                field: 'email',
+                title: '电子邮箱',
+                width: 100
+            },
+            {
+                field: 'volProfession',
+                title: '职业',
+                width: 100
+            },
+            {
+                field: 'volEmail',
+                title: '电子邮箱',
+                width: 150
+            },
+            {
+                field: 'opt1', title: '操作', width: 120, formatter: function (value, row, index) {
+                    return "<a href='#' onclick=edit('" + row.userId + "')>查看</a> ";
+                }
+            }
+        ]];
+
+        //加载datagrid，需要定义columns
+        $(function () {
+            //加载datagrid
+            $('#grid').datagrid({
+                title: '用户信息列表',//数据列表标题
+                url: '../../user/list.action',
+                idField: 'userId',//此字段很重要，数据结果集的唯一约束字段key
+                columns: columns_v,
+                pagination: true,//是否显示分页
+                pageList: [5, 10, 15, 20, 30],
+                pageSize: 10,//初始每页显示记录数
+                rownumbers: true,//是否显示行号
+                striped: true,//是否显示斑马线效果。
+                singleSelect: true //只能选择一样
+            });
+
+        });
+
+        //修改通告，打开一个修改窗口
+        function edit(id) {
+
+            //定义form的onLoadSuccess的事件，当form加载数据完成触发
+            $('#userForm').form({
+                onLoadSuccess:function(){
+                    //手动获取图片地址，设置到img的src中
+                    loadimg();
+                }
+            });
+
+            //清除表单数据
+            $('volForm').form('clear');
+            //执行load方法加载留言信息数据
+            $('#userForm').form('load', '../../user/findUserById.action?userId=' + id);
+            //打开窗口
+            $('#userWindow').window({modal: true});
+
+            $('#userWindow').window('open');
+
+
+        }
+
+
+
+        //查询用户
+        function query() {
+            //load方法向加载datagrid方法定义的url发送数据
+
+            /* $('#grid').datagrid('load',{
+                custName: ''
+            }); */
+            //查询条件在form表单，需要将form表单中的数据格化成json数据，传给load
+            //将form表单中输入框中值格化成json数据，使用工具类
+            var formdata = getFormData('searchForm');
+
+            $('#grid').datagrid('load', formdata);
+        }
+
+
+        //加载图片
+        function loadimg(){
+            //获取load到图片地址
+            var pic = $('#userPicture').val();
+            if(pic){
+                //设置到img的src中
+                //设置宽高
+                $('#userPicture_img').attr('width',240);
+                $('#userPicture_img').attr('height',200);
+                $('#userPicture_img').attr('src','/upload/'+pic);
+                //给a赋值
+              /*  $('#userPicture_img_href').attr('href','/upload/'+pic);*/
+
+            }
+
+        }
+
+        //清除图片
+        function clearimg(){
+            //设置宽高
+            $('#userPicture_img').attr('width',0);
+            $('#userPicture_img').attr('height',0);
+            $('#userPicture_img').attr('src','');
+            //给a赋值
+           /* $('#userPicture_img_href').attr('href','#');*/
+
+        }
+
+        function clearQuery() {
+
+            /* $('#cc').combobox('clear');//清空
+             $('#cc1').datebox('clear');
+             $('#cc11').datebox('clear');*/
+            $('#cc10').val("")
+            $('#cc11').combobox('clear');
+            $('#cc12').val("");
+            $('#cc13').val("");
+        }
+    </script>
+
+</head>
+<body>
+<!-- 查询条件 -->
+<div class="easyui-panel">
+    <form id="searchForm">
+        <table cellpadding="5">
+            <tr>
+                <td>用户名：</td>
+                <td>
+                    <input id="cc10" type="text" name="username">
+                </td>
+
+                <td>用户性别：</td>
+                <td>
+                    <select id="cc11" class="easyui-combobox" name="userGender" style="width:178px;" editable="false"
+                            data-options="panelHeight:'auto'">
+                        <option value="" selected>请选择</option>
+                        <option value="男">男</option>
+                        <option value="女">女</option>
+                    </select>
+                </td>
+
+            </tr>
+                <td>用户省市：</td>
+                <td><input id="cc12" class="text" name="userProvince"/>
+                </td>
+
+                <td>用户城市：</td>
+                <td><input id="cc13" class="text" name="userCity">
+                </td>
+            <tr>
+
+            </tr>
+        </table>
+        <button type="button" id="btnSearch" onclick="query()">查询</button>
+        <button type="button" id="btnClear" onclick="clearQuery()">清除查询条件</button>
+    </form>
+</div>
+
+
+<!-- 留言信息列表 -->
+<table id="grid"></table>
+
+<!-- 留言信息查看窗口 -->
+<div id="userWindow" class="easyui-window" title="用户信息列表" style="width:600px;height:450px"
+     data-options="iconCls:'icon-save',modal:true,closed:true">
+
+    <form id="userForm" method="post">
+        <input name="userId" type="hidden">
+        <table cellpadding="5">
+            <tr>
+                <td>用户名:</td>
+                <td><input type="text" name="username" readonly></td>
+                <td>昵称:</td>
+                <td><input type="text" name="userNickname" readonly></td>
+            </tr>
+            <tr>
+                <td>电话:</td>
+                <td><input type="text" name="userPhone" readonly ></td>
+                <td>性别:</td>
+                <td><input type="text" name="userGender" readonly ></td>
+            </tr>
+
+            <tr>
+                <td>所在省市:</td>
+                <td><input type="text" name="userProvince" readonly ></td>
+                <td>所在城市:</td>
+                <td><input type="text" name="userCity" readonly ></td>
+            </tr>
+            <tr>
+                <td>电子邮箱:</td>
+                <td><input type="text" name="email" readonly></td>
+            </tr>
+
+            <tr>
+                <td>图片:</td>
+                <td>
+                    <input type="hidden" name="userPicture" id="userPicture">
+                    <img src="" id="userPicture_img" alt=""></td>
+            </tr>
+        </table>
+    </form>
+</div>
+
+</body>
+</html>

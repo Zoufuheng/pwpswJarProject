@@ -1,0 +1,25 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <class name="com.pwpew.entity.TNotice" table="t_notice" >
+        <id name="ntsId">
+            <column name="ntsId" sql-type="int(32)"/>
+        </id>
+        <property name="ntsMain">
+            <column name="ntsMain" sql-type="varchar(512)" length="512"/>
+        </property>
+        <property name="ntsHeadLine">
+            <column name="ntsHeadLine" sql-type="varchar(50)" length="50"/>
+        </property>
+        <property name="ntsDate">
+            <column name="ntsDate" sql-type="datetime"/>
+        </property>
+
+        <many-to-one name="administrator" class="com.pwpew.entity.TAdministrator" fetch="select"  >
+            <column name="adminId" not-null="true"></column>
+        </many-to-one>
+    </class>
+</hibernate-mapping>

@@ -1,0 +1,27 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <class name="com.pwpew.entity.TAdministrator" table="t_administrator" schema="welfare_people_seeking">
+        <id name="adminId">
+            <column name="adminId" sql-type="int(32)"/>
+        </id>
+        <property name="adminPassword">
+            <column name="adminPassword" sql-type="varchar(32)" length="32"/>
+        </property>
+        <property name="adminName">
+            <column name="adminName" sql-type="varchar(32)" length="32"/>
+        </property>
+        <property name="adminEmail">
+            <column name="adminEmail" sql-type="varchar(32)" length="32"/>
+        </property>
+        <property name="adminStatement">
+            <column name="adminStatement" sql-type="varchar(128)" length="128" />
+        </property>
+        <property name="adminSex">
+            <column name="adminSex" sql-type="varchar(2)" length="2"/>
+        </property>
+    </class>
+</hibernate-mapping>

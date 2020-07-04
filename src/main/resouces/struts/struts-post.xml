@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+        "http://struts.apache.org/dtds/struts-2.3.dtd">
+
+<struts>
+    <package name="post" namespace="/post" extends="common">
+        <!--拦截器栈-->
+        <interceptors>
+            <interceptor name="Authintercept" class="com.pwpew.intercept.Authintercept"></interceptor>
+            <interceptor-stack name="mystack">
+                <interceptor-ref name="Authintercept"></interceptor-ref>
+                <interceptor-ref name="defaultStack"></interceptor-ref>
+            </interceptor-stack>
+        </interceptors>
+
+        <!--默认拦截器栈-->
+        <default-interceptor-ref name="mystack"/>
+
+        <!-- 通配符 方式
+       采用 struts2 和spring整合方案1，action由spring来管理，在class上指定spring容器中action的bean id
+         -->
+        <action name="*" class="postAction" method="{1}">
+            <result name="showPostOfIndex">/jsps/index/mainContent.jsp</result>
+            <result name="wantedInformation">/jsps/index/listPage.jsp</result>
+            <result name="detailedInformation">/jsps/posts/postDetailedInformation.jsp</result>
+            <result name="postList">/jsps/posts/postList.jsp</result>
+            <result name="showPost">/jsps/posts/post.jsp</result>
+            <result name="posting">/jsps/posts/postList.jsp</result>
+            <result name="showPostClass">/jsps/posts/postClass.jsp</result>
+            <result name="searchSuccess">/jsps/posts/searchPost.jsp</result>
+            <result name="accusation">/jsps/posts/post.jsp</result>
+            <result name="replyPost">/jsps/posts/post.jsp</result>
+
+            <result name="postList">/jsps/posts/postList.jsp</result>
+            <result name="post">/jsps/posts/post.jsp</result>
+            <result name="findPostListByUserId">/jsps/pc/postinfo.jsp</result>
+            <result name="findPostListByUserIdError">/jsps/login/login.jsp</result>
+
+            <result name="updatepost">/jsps/pc/postinfo.jsp</result>
+
+            <result name="posting">/jsps/posts/posting.jsp</result>
+        </action>
+    </package>
+</struts>

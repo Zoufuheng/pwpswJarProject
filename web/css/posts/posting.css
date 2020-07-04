@@ -1,0 +1,165 @@
+/*a{*/
+/*    text-decoration: none;*/
+/*    color: #4169E1;*/
+/*}*/
+/*a:hover{*/
+/*    color: #000080;*/
+/*}*/
+/*!*body{*!*/
+/*!*    margin:0;*!*/
+/*!*    padding:0;*!*/
+/*!*    background-color: #e0e5df;*!*/
+/*!*}*!*/
+/*#postListPage{*/
+/*    margin: auto 200px;*/
+/*}*/
+/*.postList{*/
+/*    background-color: #f5f5f5;*/
+/*    border: 1px solid #778899;*/
+/*    border-radius: 10px;*/
+/*    padding: 80px;*/
+/*}*/
+
+/*************Yani样式*******************/
+* {
+    margin: 0px;
+    padding: 0px;
+    box-sizing: border-box;
+}
+
+body {
+    /*background: url("../imgs/user_vol_register_img/rg_background.jpg") no-repeat center;*/
+    margin:0;
+    padding:0;
+    background-color: #e0e5df;
+}
+
+
+.rg_layout {
+    width: 1000px;
+    height: 1000px;
+    border: 8px;
+    background-color: white;
+    /*让div水平居中*/
+    margin: 50px auto 0 auto;
+    padding: 8px;
+}
+#post-posting{
+    text-align: center;
+    font-size: 30px;
+    font-weight: bold;
+}
+.rg_left {
+    /*float: left;*/
+    margin: 18px;
+}
+
+#user_register {
+    color: #c88bff;
+    font-size: 26px;
+}
+
+.rg_center {
+    /*border: 1px solid red;*/
+    /*float: left;*/
+    margin: 0 auto;
+}
+
+table {
+    margin: 70px auto;
+}
+.td_left {
+    width: 80px;
+    text-align: right;
+    height: 60px;
+}
+.td_right {
+    padding-left: 30px;
+    border-radius: 5px;
+    padding-right: 0px;
+    margin-right: 0px;
+    column-span: 3;
+}
+#postType,#postName,#postAge, #missingtime, #postCountry, #postStreet, #check_code{
+    width: 300px;
+    height: 50px;
+    border: 1px solid gray;
+    /*设置边框圆角*/
+    border-radius: 5px;
+    padding-left: 10px;
+}
+#postDescribe{
+    width: 300px;
+    height: 50px;
+    border: 1px solid gray;
+    /*设置边框圆角*/
+    border-radius: 5px;
+    padding-left: 10px;
+    height: 150px;
+}
+.requirement{
+    color: red;
+}
+.man {
+    margin-right: 50px;
+}
+#province1, #city1 {
+    height: 50px;
+    width: 150px;
+    /*设置边框圆角*/
+    border-radius: 5px;
+    padding-right: 0px;
+    padding-left: 0px;
+    margin: auto 0px;
+}
+#check_code {
+    width: 250px;
+    height: 50px;
+    border: 1px solid gray;
+    /*设置边框圆角*/
+    border-radius: 5px;
+    padding-left: 10px;
+}
+
+.rg_right {
+    /*border: 1px solid red;*/
+    /*float: right;*/
+    margin: 18px;
+}
+
+.rg_right p a {
+    text-decoration: none;
+}
+
+#btn_posting {
+    width: 100px;
+    height: 40px;
+    background-color: mediumseagreen;
+    border-radius: 5px;
+}
+
+#btn_reset {
+    width: 100px;
+    height: 40px;
+    background-color: mediumseagreen;
+    border-radius: 5px;
+}
+
+.error {
+    color: red;
+}
+/*start验证码样式*/
+.input-val {
+    width: 200px;
+    height: 32px;
+    border: 1px solid #ddd;
+    box-sizing: border-box;
+}
+
+#canvas {
+    vertical-align: middle;
+    box-sizing: border-box;
+    border: 1px solid #ddd;
+    cursor: pointer;
+}
+/*end验证码样式*/

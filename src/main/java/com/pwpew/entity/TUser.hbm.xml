@@ -1,0 +1,42 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <class name="com.pwpew.entity.TUser" table="t_user" >
+        <id name="userId">
+            <column name="userId" sql-type="int(32)"/>
+        </id>
+        <property name="username">
+            <column name="username" sql-type="varchar(32)" length="32"/>
+        </property>
+        <property name="userPassword">
+            <column name="userPassword" sql-type="varchar(16)" length="16"/>
+        </property>
+        <property name="userGender">
+            <column name="userGender" sql-type="varchar(4)" length="4"/>
+        </property>
+        <property name="userAge">
+            <column name="userAge" sql-type="int(4)"/>
+        </property>
+        <property name="userProvince">
+            <column name="userProvince" sql-type="varchar(16)" length="16"/>
+        </property>
+        <property name="userCity">
+            <column name="userCity" sql-type="varchar(16)" length="16"/>
+        </property>
+        <property name="userPhone">
+            <column name="userPhone" sql-type="varchar(16)" length="16"/>
+        </property>
+        <property name="email">
+            <column name="email" sql-type="varchar(32)" length="32" />
+        </property>
+        <property name="userPicture">
+            <column name="userPicture" sql-type="varchar(48)" length="48" />
+        </property>
+        <property name="userNickname">
+            <column name="userNickname" sql-type="varchar(48)" length="48" />
+        </property>
+    </class>
+</hibernate-mapping>

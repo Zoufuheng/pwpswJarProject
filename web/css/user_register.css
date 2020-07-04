@@ -1,0 +1,130 @@
+* {
+    margin: 0px;
+    padding: 0px;
+    box-sizing: border-box;
+}
+
+body {
+    background: url("../imgs/user_vol_register_img/rg_background.jpg") no-repeat center;
+}
+
+.rg_layout {
+    width: 1000px;
+    height: 1000px;
+    border: 8px;
+    background-color: white;
+    /*让div水平居中*/
+    margin: 50px auto 0 auto;
+    padding: 8px;
+}
+
+.rg_left {
+    float: left;
+    margin: 18px;
+}
+
+#user_register {
+    color: #c88bff;
+    font-size: 26px;
+}
+
+.rg_center {
+    /*border: 1px solid red;*/
+    float: left;
+}
+
+table {
+    margin: 70px auto;
+}
+.td_left {
+    width: 80px;
+    text-align: right;
+    height: 60px;
+}
+.td_right {
+    padding-left: 30px;
+    border-radius: 5px;
+    padding-right: 0px;
+    margin-right: 0px;
+    column-span: 3;
+}
+#username,#userNickname,#userPassword, #userAge, #userPhone, #email {
+    width: 300px;
+    height: 40px;
+    border: 1px solid gray;
+    /*设置边框圆角*/
+    border-radius: 5px;
+    padding-left: 10px;
+    margin-right: 10px;
+}
+.requirement{
+    color: red;
+}
+.man {
+    margin-right: 50px;
+}
+#province1, #city1 {
+    height: 40px;
+    width: 150px;
+    /*设置边框圆角*/
+    border-radius: 5px;
+    padding-right: 0px;
+    padding-left: 0px;
+    margin: auto 0px;
+}
+#check_code {
+    width: 250px;
+    height: 40px;
+    border: 1px solid gray;
+    /*设置边框圆角*/
+    border-radius: 5px;
+    padding-left: 10px;
+}
+
+.rg_right {
+    /*border: 1px solid red;*/
+    float: right;
+    margin: 18px;
+}
+
+#have_account {
+    font-size: 18px;
+}
+
+.rg_right p a {
+    text-decoration: none;
+}
+
+#btn_register {
+    width: 100px;
+    height: 40px;
+    background-color: mediumseagreen;
+    border-radius: 5px;
+}
+
+#btn_reset {
+    width: 100px;
+    height: 40px;
+    background-color: mediumseagreen;
+    border-radius: 5px;
+}
+
+.error {
+    color: red;
+}
+
+/*start验证码样式*/
+.input-val {
+    width: 200px;
+    height: 32px;
+    border: 1px solid #ddd;
+    box-sizing: border-box;
+}
+
+#canvas {
+    vertical-align: middle;
+    box-sizing: border-box;
+    border: 1px solid #ddd;
+    cursor: pointer;
+}
+/*end验证码样式*/

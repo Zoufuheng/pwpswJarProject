@@ -1,0 +1,332 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>通告管理</title>
+    <link rel="stylesheet" type="text/css"
+          href="../ui/themes/default/easyui.css">
+    <link rel="stylesheet" type="text/css" href="../ui/themes/icon.css">
+    <script type="text/javascript" src="../ui/jquery.min.js"></script>
+    <script type="text/javascript" src="../ui/jquery.easyui.min.js"></script>
+    <script type="text/javascript" src="../ui/locale/easyui-lang-zh_CN.js"></script>
+    <script type="text/javascript" src="../js/custom.js"></script>
+
+    <script type="text/javascript">
+
+
+        //格式化日期,可以在后端直接格式化
+        /*Date.prototype.format = function (format) {
+            var o = {
+                "M+": this.getMonth() + 1, // month
+                "d+": this.getDate(), // day
+                "h+": this.getHours(), // hour
+                "m+": this.getMinutes(), // minute
+                "s+": this.getSeconds(), // second
+                "q+": Math.floor((this.getMonth() + 3) / 3), // quarter
+                "S": this.getMilliseconds()
+                // millisecond
+            }
+            if (/(y+)/.test(format))
+                format = format.replace(RegExp.$1, (this.getFullYear() + "")
+                    .substr(4 - RegExp.$1.length));
+            for (var k in o)
+                if (new RegExp("(" + k + ")").test(format))
+                    format = format.replace(RegExp.$1, RegExp.$1.length == 1 ? o[k] : ("00" + o[k]).substr(("" + o[k]).length));
+            return format;
+        }
+
+        function formatDatebox(value) {
+            if (value == null || value == '') {
+                return '';
+            }
+            var dt;
+            if (value instanceof Date) {
+                dt = value;
+            } else {
+                dt = new Date(value);
+            }
+            return dt.format("yyyy-MM-dd hh:mm:ss"); //扩展的Date的format方法(上述插件实现)
+        }*/
+
+
+        //定义column
+        var columns_v = [[{
+            field: 'ntsHeadLine',
+            title: '通告标题',
+            width: 200
+        }, {
+            field: 'ntsMain',
+            title: '通告内容',
+            width: 700
+        }, /*{
+            field: 'msgType',
+            title: '通告类型',
+            width: 100
+        },*/ {
+            field: 'ntsDate',
+            title: '通告日期',
+            width: 200,
+        }, {
+            field: 'administrator',
+            title: '发布人',
+            width: 100,
+            formatter: function (value, row, index) {
+                if (row.administrator) {
+                    return row.administrator.adminName;
+                }
+            }
+        }, {
+            field: 'opt1',
+            title: '操作',
+            width: 120,
+            formatter: function (value, row, index) {
+                return "<a href='#'   onclick=edit('" + row.ntsId + "')>修改</a> <a href='#' onclick=del('" + row.ntsId + "')>删除</a>";
+            }
+        }]];
+        /*<a href="#" class="easyui-linkbutton" id="edit" data-options="iconCls:'icon-edit',plain:true"a>编辑</a>
+        <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-remove',plain:true"a>删除</a>*/
+
+        //定义工具栏
+        var toolbar_v = [{
+
+            id: 'btnadd',//按钮 的id
+            text: '添加',
+            iconCls: 'icon-add',
+            handler: add //调用add方法
+        }];
+        //加载datagrid，需要定义columns
+        $(function () {
+            //加载datagrid
+            $('#grid').datagrid({
+                title: '通知信息列表',//数据列表标题
+                url: '../../notice/list.action',
+                idField: 'ntsId',//此字段很重要，数据结果集的唯一约束字段key
+                columns: columns_v,
+                pagination: true,//是否显示分页
+                pageList: [5, 10, 15, 20, 30],
+                pageSize: 10,//初始每页显示记录数
+                rownumbers: true,//是否显示行号
+                striped:true,//是否显示斑马线效果。
+                singleSelect:true, //只能选择一样
+                toolbar: toolbar_v
+            });
+
+        });
+
+
+        //标记，当前执行的是添加还是修改
+        var methodtag;
+
+        //添加通告
+        function add() {
+            //打开添加窗口时设置标记为add
+            methodtag = 'add';
+            //打开窗口
+            $('#noticeWindow').window({modal: true});
+            $('#noticeWindow').window('open');
+            //清理表单
+            $('#noticeForm').form('clear');
+
+        }
+
+        //修改通告，打开一个修改窗口
+        function edit(id) {
+            //打开添加窗口时设置标记为edit
+            methodtag = 'edit';
+            //清除表单数据
+            $('#noticeForm').form('clear');
+            //执行load方法加载通告信息数据
+            $('#noticeForm').form('load', '../../notice/findNoticeById.action?ntsId=' + id);
+            //$('#noticeForm').form('load','../../notice/findNoticeById.action?ntsId='+id);
+            //打开窗口
+            $('#noticeWindow').window({modal: true});
+
+            $('#noticeWindow').window('open');
+
+        }
+
+        //保存方法
+        function save() {
+            if (methodtag == 'add') {
+                //添加提交
+                addsubmit();
+            } else {
+                //修改提交
+                editsubmit();
+            }
+
+
+        }
+
+        //添加提示方法
+        function addsubmit() {
+            //设置form的action属性
+            $('#noticeForm').attr("action", '../../notice/addsubmit.action');
+            $('#noticeForm').form('submit', {
+                success: function (data) {
+                    var result = eval('(' + data + ')');  // change the JSON string to javascript object
+                    //提示操作结果
+                    $.messager.alert('提示', result.message);
+                    //如果删除成功刷新 列表
+
+                    if (result.success) {
+                        //刷新 datagrid
+                        //方法1，调用 query()
+                        //方法2，调用datagrid的reload方法
+                        $('#grid').datagrid('reload');
+                        //关闭窗口
+                        $('#noticeWindow').window('close');
+                    }
+                }
+            });
+
+        }
+
+        //修改提交 方法
+        function editsubmit() {
+            $('#noticeForm').attr("action", '../../notice/editsubmit.action');
+            $('#noticeForm').form('submit', {
+                success: function (data) {
+                    var result = eval('(' + data + ')');  // change the JSON string to javascript object
+                    //提示操作结果
+                    $.messager.alert('提示', result.message);
+                    //如果删除成功刷新 列表
+
+                    if (result.success) {
+                        //刷新 datagrid
+                        //方法1，调用 query()
+                        //方法2，调用datagrid的reload方法
+                        $('#grid').datagrid('reload');
+                        //关闭窗口
+                        $('#noticeWindow').window('close');
+                    }
+                }
+            });
+        }
+
+        //删除通告
+        function del(id) {
+
+            $.messager.confirm('删除提示', '确定删除吗?', function (r) {
+                //当点击确定，r形参为true
+                if (r) {
+                    //执行删除
+                    //通过ajax请求删除
+                    $.ajax({
+                        url: '../../notice/deleteNotice.action?ntsId=' + id,
+                        dataType: 'json',//预期服务端返回json
+                        success: function (result) {//形参result内容是deleteNotice.action响应的结果，是json对象
+                            //提示操作结果
+                            $.messager.alert('提示', result.message);
+                            //如果删除成功刷新 列表
+
+                            if (result.success) {
+                                //刷新 datagrid
+                                //方法1，调用 query()
+                                //方法2，调用datagrid的reload方法
+                                $('#grid').datagrid('reload');
+                            }
+                        }
+
+
+                    });
+                }
+            });
+
+        }
+
+        //查询通告
+        function query() {
+            //load方法向加载datagrid方法定义的url发送数据
+
+            /* $('#grid').datagrid('load',{
+                custName: ''
+            }); */
+            //查询条件在form表单，需要将form表单中的数据格化成json数据，传给load
+            //将form表单中输入框中值格化成json数据，使用工具类
+            var formdata = getFormData('searchForm');
+
+            $('#grid').datagrid('load', formdata);
+        }
+
+        function clearQuery() {
+
+            $('#cc1').datebox('clear');//清空
+            $('#cc2').combobox('clear');
+            $('#cc11').datebox('clear');
+            $('#cc0').val("");
+        }
+    </script>
+</head>
+<body>
+<!-- 查询条件 -->
+<div class="easyui-panel">
+    <form id="searchForm">
+        <table cellpadding="5">
+            <tr>
+                <td>通告标题：</td>
+                <td><input id="cc0" name="ntsHeadLine"/></td>
+
+                <td>发布通告起始时间：</td>
+                <td><input id="cc1" class="easyui-datebox"
+                           name="ntsDate" editable="false"/>
+                </td>
+
+                <td>发布通告结束时间：</td>
+                <td><input id="cc11" class="easyui-datebox"
+                           name="ntsDate_end" editable="false"/>
+                </td>
+
+                <td>发布人：</td>
+                <td><input id="cc2" class="easyui-combobox"
+                           name="administrator.adminId"
+                           data-options="url:'../../admin/findAdminList.action',textField:'adminName',valueField:'adminId',editable:false,panelHeight:'auto'"/>
+                </td>
+            </tr>
+        </table>
+        <button type="button" id="btnSearch" onclick="query()">查询</button>
+        <button type="button" id="btnClear" onclick="clearQuery()">清除查询条件</button>
+    </form>
+</div>
+<!-- 通知信息列表 -->
+<table id="grid"></table>
+
+<!-- 通知信息窗口 -->
+<div id="noticeWindow" class="easyui-window" title="通知信息列表" style="width:800px;height:600px"
+     data-options="iconCls:'icon-save',modal:true,closed:true">
+    <form id="noticeForm" method="post">
+        <input name="ntsId" type="hidden">
+        <table cellpadding="5">
+            <tr>
+                <td>通告标题:</td>
+                <td><input type="text" name="ntsHeadLine" required="required"></input></td>
+            </tr>
+            <tr>
+                <td>通告日期:</td>
+                <td><input id="dd" name="ntsDate" class="easyui-datetimebox" editable="false"
+                           required="required"></td>
+                <td>发布人:</td>
+                <td><input name="administrator.adminId" class="easyui-combobox" required="required"
+                           data-options="url:'../../admin/findAdminList.action',textField:'adminName',valueField:'adminId',editable:false,panelHeight:'auto'"/>
+                </td>
+            </tr>
+            <tr>
+                <td>通告内容:</td>
+                <td colspan="3">
+                    <textarea name="ntsMain" rows=5 name="" class="textarea easyui-validatebox"
+                              style="height:430px;width: 350px" ></textarea>
+                    <!-- <input name="ntsMain" class="easyui-textbox"  data-options="multiline:true"  style="height:400px;width: 400px">-->
+                </td>
+            </tr>
+
+
+            <tr>
+                <td colspan="4">
+                    <button id="noticeBtn" type="button" onclick="save()">保存</button>
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+</body>
+</html>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+        "http://struts.apache.org/dtds/struts-2.3.dtd">
+
+<struts>
+
+    <package name="notice" namespace="/notice" extends="common">
+        <!--拦截器栈-->
+        <interceptors>
+            <interceptor name="Authintercept" class="com.pwpew.intercept.Authintercept"></interceptor>
+            <interceptor-stack name="mystack">
+                <interceptor-ref name="Authintercept"></interceptor-ref>
+                <interceptor-ref name="defaultStack"></interceptor-ref>
+            </interceptor-stack>
+        </interceptors>
+
+        <!--默认拦截器栈-->
+        <default-interceptor-ref name="mystack"/>
+
+        <!-- 通配符 方式
+       采用 struts2 和spring整合方案1，action由spring来管理，在class上指定spring容器中action的bean id
+       请求add.action，*匹配了add，{1}表示第一个匹配串
+
+   -->
+
+        <action name="*"  class="noticeAction" method="{1}">
+
+            <result name="noticeSuccess">/jsps/notice/noticeList.jsp</result>
+            <result name="noticeMain">/jsps/notice/notice.jsp</result>
+            <result name="Lastnotice">/jsps/notice/notice.jsp</result>
+            <result name="Nextnotice">/jsps/notice/notice.jsp</result>
+            <!-- <result name.="success">/jsp/success.jsp</result>-->
+            <!--<result name="latestNotice">/index.jsp</result>-->
+        </action>
+
+
+    </package>
+</struts>

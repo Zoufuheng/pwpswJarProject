@@ -1,0 +1,30 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <class name="com.pwpew.entity.TMessage" table="t_message" schema="welfare_people_seeking">
+        <id name="msgId">
+            <column name="msgId" sql-type="int(32)"/>
+        </id>
+        <property name="msgMain">
+            <column name="msgMain" sql-type="varchar(256)" length="256" not-null="true"/>
+        </property>
+        <property name="msgDate">
+            <column name="msgDate" sql-type="datetime"/>
+        </property>
+        <property name="msgResTime">
+            <column name="msgResTime" sql-type="datetime"/>
+        </property>
+        <property name="msgResMain">
+            <column name="msgResMain" sql-type="varchar(256)" length="256"/>
+        </property>
+
+
+        <many-to-one name="user" class="com.pwpew.entity.TUser" fetch="join" lazy="false">
+            <column name="userId" not-null="true"></column>
+        </many-to-one>
+
+    </class>
+</hibernate-mapping>

@@ -1,0 +1,49 @@
+#btnuser {
+    width: 35%;
+    background-color: #f45438;
+    color: white;
+    padding: 10px 10px;
+    margin-left: 34px;
+    margin-right: 9px;
+    border: none;
+    cursor: pointer;
+    /*border-radius: 4px;*/
+    /*cursor: pointer;*/
+}
+
+#btnvol {
+    width: 35%;
+    background-color: #f45438;
+    color: white;
+    padding: 10px 10px;
+    margin-left: 34px;
+    margin-right: 9px;
+    border: none;
+    cursor: pointer;
+    /* cursor: pointer;*/
+}
+
+#areg {
+    color: #ec4e00;
+    margin-left: 20px;
+    margin-right: 40px;
+
+}
+
+#afor {
+    color: #ec4e00;
+    margin-left: 15px;
+    /* margin-right: 34px*/
+}
+
+#change {
+    color: #ec4e00;
+    margin-left: 25px;
+    margin-right: 82px;
+
+}
+
+
+
+
+

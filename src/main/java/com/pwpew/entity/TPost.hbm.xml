@@ -1,0 +1,72 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <class name="com.pwpew.entity.TPost" table="t_post" >
+        <id name="postId">
+            <column name="postId" sql-type="int(32)"/>
+        </id>
+        <property name="postType">
+            <column name="postType" sql-type="varchar(16)" length="16" not-null="true"/>
+        </property>
+        <property name="postName">
+            <column name="postName" sql-type="varchar(32)" length="32" not-null="true"/>
+        </property>
+        <property name="postGender">
+            <column name="postGender" sql-type="varchar(4)" length="4" not-null="true"/>
+        </property>
+        <property name="postAge">
+            <column name="postAge" sql-type="int(4)" />
+        </property>
+        <property name="missingtime">
+            <column name="missingtime" sql-type="datetime" />
+        </property>
+        <property name="postTime">
+            <column name="postTime" sql-type="datetime"/>
+        </property>
+        <property name="postProvince">
+            <column name="postProvince" sql-type="varchar(32)" length="32" />
+        </property>
+        <property name="postCity">
+            <column name="postCity" sql-type="varchar(32)" length="32" />
+        </property>
+        <property name="postCountry">
+            <column name="postCountry" sql-type="varchar(32)" length="32" />
+        </property>
+        <property name="postStreet">
+            <column name="postStreet" sql-type="varchar(32)" length="32" />
+        </property>
+        <property name="postDescribe">
+            <column name="postDescribe" sql-type="varchar(128)" length="128" />
+        </property>
+        <property name="effectiveness">
+            <column name="effectiveness" sql-type="varchar(1)" not-null="true"/>
+        </property>
+        <property name="statue">
+            <column name="statue" sql-type="varchar(1)" not-null="true"/>
+        </property>
+        <property name="postPicture">
+            <column name="postPicture" sql-type="varchar(48)" length="48" />
+        </property>
+
+        <many-to-one name="user" class="com.pwpew.entity.TUser" fetch="join" >
+            <column name="userId" ></column>
+        </many-to-one>
+
+        <set name="comments" table="t_comment"  fetch="select" cascade="delete" inverse="true">
+            <key>
+                <column name="postId" ></column>
+            </key>
+            <one-to-many class="com.pwpew.entity.TComment" />
+        </set>
+
+        <!--<set name="comments" inverse="true" fetch="select" cascade="delete">
+            <key>
+                <column name="commentId"></column>
+            </key>
+            <one-to-many class="com.pwpew.entity.TComment"/>
+        </set>-->
+    </class>
+</hibernate-mapping>

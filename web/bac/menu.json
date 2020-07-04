@@ -1,0 +1,43 @@
+{
+	"menus": [
+		{
+			"icon": "icon-edit",
+			"menuid": "1",
+			"menuname": "后台管理",
+			"url": "",
+			"menus": [
+				{
+					"icon": "icon-log",
+					"menuid": "1_1",
+					"menuname": "留言信息管理",
+					"url": "views/message.html"
+				},
+				{
+					"icon": "icon-log",
+					"menuid": "1_2",
+					"menuname": "通告信息管理",
+					"url": "views/notice.html"
+				},
+				{
+					"icon": "icon-log",
+					"menuid": "1_3",
+					"menuname": "帖子信息管理",
+					"url": "views/post.html"
+				},
+				{
+					"icon": "icon-log",
+					"menuid": "1_4",
+					"menuname": "志愿者信息管理",
+					"url": "views/volunteer.html"
+				},
+				{
+					"icon": "icon-log",
+					"menuid": "1_5",
+					"menuname": "用户信息管理",
+					"url": "views/user.html"
+				}
+			]
+		}
+
+	]
+}

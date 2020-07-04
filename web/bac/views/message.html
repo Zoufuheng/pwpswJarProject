@@ -1,0 +1,269 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>留言信息管理</title>
+    <link rel="stylesheet" type="text/css" href="../ui/themes/default/easyui.css">
+    <link rel="stylesheet" type="text/css" href="../ui/themes/icon.css">
+    <script type="text/javascript" src="../ui/jquery.min.js"></script>
+    <script type="text/javascript" src="../ui/jquery.easyui.min.js"></script>
+    <script type="text/javascript" src="../ui/locale/easyui-lang-zh_CN.js"></script>
+    <script type="text/javascript" src="../js/custom.js"></script>
+
+    <script type="text/javascript">
+        //定义column
+        var columns_v = [[
+            {
+                field: 'userId', title: '留言用户', width: 100, formatter: function (value, row, index) {
+                    if (row.user) {
+                        return row.user.username;
+                    }
+                }
+            },
+            {
+                field: 'msgMain',
+                title: '留言内容',
+                width: 400
+            },
+            {
+                field: 'msgDate',
+                title: '留言时间',
+                width: 200
+            },
+            {
+                field: 'msgResMain',
+                title: '留言回复内容',
+                width: 400
+            },
+            {
+                field: 'msgResTime',
+                title: '留言回复时间',
+                width: 200
+            },
+            {
+                field: 'isRes', title: '是否已经回复', width: 100, formatter: function (value, row, index) {
+                    if (row.msgResMain) {
+                        return "是";
+                    } else {
+                        return "<font  color='red'>否</font>";
+                    }
+
+                }
+            },
+            {
+                field: 'opt1', title: '操作', width: 120, formatter: function (value, row, index) {
+                    return "<a href='#' onclick=edit('" + row.msgId + "')>查看</a> <a href='#' onclick=del('" + row.msgId + "')>删除</a>";
+                }
+            }
+        ]];
+
+        //加载datagrid，需要定义columns
+        $(function () {
+            //加载datagrid
+            $('#grid').datagrid({
+                title: '留言信息列表',//数据列表标题
+                url: '../../message/list.action',
+                idField: 'msgId',//此字段很重要，数据结果集的唯一约束字段key
+                columns: columns_v,
+                pagination: true,//是否显示分页
+                pageList: [5, 10, 15, 20, 30],
+                pageSize: 10,//初始每页显示记录数
+                rownumbers: true,//是否显示行号
+                striped: true,//是否显示斑马线效果。
+                singleSelect: true //只能选择一样
+            });
+
+        });
+
+        //修改通告，打开一个修改窗口
+        function edit(id) {
+            //清除表单数据
+            $('#messageForm').form('clear');
+            //执行load方法加载留言信息数据
+            $('#messageForm').form('load', '../../message/findMessageById.action?msgId=' + id);
+            //打开窗口
+            $('#messageWindow').window({modal: true});
+
+            $('#messageWindow').window('open');
+
+        }
+
+        function clear() {
+            $('#messageWindow').window('close')
+        }
+
+        //保存方法
+        function save() {
+            //修改提交
+            editsubmit();
+        }
+
+
+        //修改提交 方法
+        function editsubmit() {
+            $('#messageForm').attr("action", '../../message/editsubmit.action');
+            $('#messageForm').form('submit', {
+                success: function (data) {
+                    var result = eval('(' + data + ')');  // change the JSON string to javascript object
+                    //提示操作结果
+                    $.messager.alert('提示', result.message);
+                    //如果删除成功刷新 列表
+
+                    if (result.success) {
+                        //刷新 datagrid
+                        //方法1，调用 query()
+                        //方法2，调用datagrid的reload方法
+                        $('#grid').datagrid('reload');
+                        //关闭窗口
+                        $('#messageWindow').window('close');
+                    }
+                }
+            });
+        }
+
+
+        //删除通告
+        function del(id) {
+
+            $.messager.confirm('删除提示', '确定删除吗?', function (r) {
+                //当点击确定，r形参为true
+                if (r) {
+                    //执行删除
+                    //通过ajax请求删除
+                    $.ajax({
+                        url: '../../message/deleteMessage.action?msgId=' + id,
+                        dataType: 'json',//预期服务端返回json
+                        success: function (result) {//形参result内容是deleteNotice.action响应的结果，是json对象
+                            //提示操作结果
+                            $.messager.alert('提示', result.message);
+                            //如果删除成功刷新 列表
+
+                            if (result.success) {
+                                //刷新 datagrid
+                                //方法1，调用 query()
+                                //方法2，调用datagrid的reload方法
+                                $('#grid').datagrid('reload');
+                            }
+                        }
+                    });
+                }
+            });
+
+        }
+
+
+        //查询留言
+        function query() {
+            //load方法向加载datagrid方法定义的url发送数据
+
+            /* $('#grid').datagrid('load',{
+                custName: ''
+            }); */
+            //查询条件在form表单，需要将form表单中的数据格化成json数据，传给load
+            //将form表单中输入框中值格化成json数据，使用工具类
+            var formdata = getFormData('searchForm');
+
+            $('#grid').datagrid('load', formdata);
+        }
+
+        function clearQuery() {
+
+            $('#cc').combobox('clear');//清空
+            $('#cc1').datebox('clear');
+            $('#cc11').datebox('clear');
+        }
+    </script>
+</head>
+<body>
+<!-- 查询条件 -->
+<div class="easyui-panel">
+    <form id="searchForm">
+        <table cellpadding="5">
+            <tr>
+                <td>是否已经回复留言：</td>
+                <td>
+                    <select id="cc" class="easyui-combobox" name="msgIsRes" style="width:200px;" editable="false"
+                            data-options="panelHeight:'auto'">
+                        <option value=0 selected>请选择</option>
+                        <option value=1>已经回复留言</option>
+                        <option value=2>未回复留言</option>
+                    </select>
+                </td>
+
+                <td>留言起始时间：</td>
+                <td><input id="cc1" class="easyui-datebox"
+                           name="msgDate" editable="false"/>
+                </td>
+
+                <td>留言终止时间：</td>
+                <td><input id="cc11" class="easyui-datebox"
+                           name="msgDate_end" editable="false"/>
+                </td>
+
+            </tr>
+        </table>
+        <button type="button" id="btnSearch" onclick="query()">查询</button>
+        <button type="button" id="btnClear" onclick="clearQuery()">清除查询条件</button>
+    </form>
+</div>
+
+
+<!-- 留言信息列表 -->
+<table id="grid"></table>
+
+<!-- 留言信息查看窗口 -->
+<div id="messageWindow" class="easyui-window" title="留言信息列表" style="width:650px;height:720px"
+     data-options="iconCls:'icon-save',modal:true,closed:true">
+
+    <form id="messageForm" method="post">
+        <input name="msgId" type="hidden">
+        <input name="user.userId" type="hidden">
+        <table cellpadding="5">
+            <tr>
+                <td>留言用户:</td>
+                <td><input type="text" name="user.username" readonly></input></td>
+                <td>留言日期:</td>
+                <td><input id="dd" name="msgDate" class="easyui-datetimebox" readonly></input></td>
+            </tr>
+            <tr>
+                <td>留言内容:</td>
+                <td colspan="3">
+                    <textarea name="msgMain" rows=5 readonly class="textarea easyui-validatebox"
+                              style="height:250px;width: 500px">
+                    </textarea>
+                </td>
+            </tr>
+
+            <tr>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+            </tr>
+
+            <tr>
+                <td>回复日期:</td>
+                <td>
+                    <input id="dd1" required name="msgResTime" class="easyui-datetimebox" editable="false"></input>
+                </td>
+            </tr>
+            <tr>
+                <td>回复内容:</td>
+                <td colspan="3">
+                    <textarea name="msgResMain" rows=5 class="textarea easyui-validatebox" required
+                              style="height:250px;width: 500px"></textarea>
+                </td>
+            </tr>
+
+            <tr align="right">
+                <td colspan="4">
+                    <button id="msgBtn" type="button" onclick="save()">回复</button>
+                    <!--<button id="msgBtnClose" type="button" οnclick="clear()">关闭</button>-->
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+
+</body>
+</html>
